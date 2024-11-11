@@ -1,4 +1,5 @@
 torch==2.1.2 
+packaging
 flash_attn
 bitsandbytes
 transformers==4.40.0 
