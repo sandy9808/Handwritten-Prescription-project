@@ -1,6 +1,4 @@
-torch==2.1.2 
-packaging
-flash_attn
+flash-attn
 bitsandbytes
 transformers==4.40.0 
 Pillow==10.1.0 
