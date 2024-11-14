@@ -14,7 +14,8 @@ quant_config = BitsAndBytesConfig(
     bnb_4bit_compute_dtype=torch.bfloat16
 )
 
-app = Flask(_name_)
+# Corrected __name__ usage
+app = Flask(__name__)
 app.secret_key = os.urandom(24)
 
 @app.route('/predictImage', methods=['POST'])
@@ -43,20 +44,21 @@ def index_page():
     """Renders the 'index.html' page for manual image file uploads."""
     return render_template("index.html")
 
-if _name_ == '_main_':
+# Corrected __name__ usage and added waitress serve
+if __name__ == '__main__':
     # Load model and tokenizer
     device = torch.device('cuda:7') if torch.cuda.is_available() else torch.device('cpu')
     print(f'Running on device: {device}')
 
     login("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")
-    model=AutoModel.from_pretrained(
+    model = AutoModel.from_pretrained(
         'openbmb/MiniCPM-V-2_6', 
         trust_remote_code=True,
         attn_implementation='sdpa',
-        device_map = device, 
-        quantization_config = quant_config)
+        device_map=device, 
+        quantization_config=quant_config)
         
     tokenizer = AutoTokenizer.from_pretrained('openbmb/MiniCPM-V-2_6', trust_remote_code=True)
 
     # Start flask application on waitress WSGI server
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    serve(app, host='0.0.0.0', port=5000)
